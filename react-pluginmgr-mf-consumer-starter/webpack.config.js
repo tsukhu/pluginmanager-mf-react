@@ -8,25 +8,35 @@ const doAsync = async () => {
 
   const federatedRemotes = {
     "jherr-mf-slider": "1.0.1",
+    "tsukhu-mf-footer": "1.0.1",
   };
+
   const deps = {
     ...federatedRemotes,
     ...require("./package.json").dependencies,
   };
   
-  const getRemote = async (name) => {
-    await manager.install(name,deps[name]);
+  const getRemote = (name) => {
     return `${camelCase(name)}@./plugin_packages/${name}/dist/browser/remote-entry.js`;
   };
   
+  const installRemote = async (name,version) => {
+    await manager.install(name,version);
+  };
+
+  // Download required remotes via the plugin manager
+  await Object.entries(federatedRemotes).map((entry) => installRemote(entry[0], entry[1]));
  
-  const remotes = await Object.keys(federatedRemotes).reduce(
-    async (remotes, lib) => ({
+  const remotes = Object.keys(federatedRemotes).reduce(
+    (remotes, lib) => {
+      return ({
       ...remotes,
-      [lib]: await getRemote(lib),
-    }),
+      [lib]: getRemote(lib),
+    })},
     {}
   );
+
+  console.log(remotes);
   return {
     output: {
       publicPath: "http://localhost:8080/",

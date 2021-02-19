@@ -38,6 +38,7 @@
     "framer-motion": "^3.3.0",
     "live-plugin-manager": "^0.15.1",
     "react": "^17.0.1",
-    "react-dom": "^17.0.1"
+    "react-dom": "^17.0.1",
+    "react-icons": "^4.2.0"
   }
 }
